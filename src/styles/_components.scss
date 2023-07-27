@@ -1,0 +1,53 @@
+@use './variables.scss' as variables;
+
+button.btn {
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 35px;
+    padding: 0.75rem 2rem;
+    transition: background-color ease-in-out 0.2s, box-shadow ease-in-out 0.2s;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid transparent;
+
+    &.secondary {
+        color: variables.$text-on-secondary;
+        background-color: variables.$secondary;
+        border-color: variables.$secondary;
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 variables.$outline-width variables.$outline-on-primary;
+        }
+
+        &:hover {
+            background-color: lighten(variables.$secondary, 5%);
+            border-color: lighten(variables.$secondary, 5%);
+        }
+
+        &:active {
+            background-color: darken(variables.$secondary, 2.5%);
+            border-color: darken(variables.$secondary, 2.5%);
+        }
+    }
+
+    &.tertiary {
+        color: variables.$text-on-tertiary;
+        background-color: variables.$tertiary;
+        border-color: variables.$tertiary;
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 variables.$outline-width variables.$outline-on-primary;
+        }
+
+        &:hover {
+            background-color: lighten(variables.$tertiary, 5%);
+            border-color: lighten(variables.$tertiary, 5%);
+        }
+
+        &:active {
+            background-color: darken(variables.$tertiary, 2.5%);
+            border-color: darken(variables.$tertiary, 2.5%);
+        }
+    }
+}

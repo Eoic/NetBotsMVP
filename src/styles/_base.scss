@@ -1,4 +1,15 @@
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('./fonts/JetBrains-Mono.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'AudioWide';
+    src: url('./fonts/Audiowide.ttf') format('truetype');
+}
+
 html,
 body {
     height: 100%;
+    font-family: 'JetBrains Mono', monospace;
 }
