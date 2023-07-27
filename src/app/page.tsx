@@ -1,11 +1,15 @@
-import styles from './page.module.css'
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import Main from "@/components/Main";
 
-export default function Home() {
-  return (
-    <main className={styles.main}>
-      <h1 className={styles.title}>
-        Welcome to <a href="https://nextjs.org">Net Bots!</a>
-      </h1>
-    </main>
-  )
-}
+const Home = () => {
+    return (
+        <>
+            <Header />
+            <Main />
+            <Footer />
+        </>
+    );
+};
+
+export default Home;
