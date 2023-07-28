@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react';
+import { ShapeRenderer, Rectangle } from '../utils/shapes';
 import { useRef, useEffect, useState } from 'react';
 
 const CanvasBackground = () => {
@@ -14,41 +15,48 @@ const CanvasBackground = () => {
 
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+
+        const parentWidth = canvas.parentElement!.clientWidth;
+        const parentHeight = canvas.parentElement!.clientHeight;
+        canvas.width = parentWidth;
+        canvas.height = parentWidth / (parentWidth / parentHeight);
 
         if (context === null) {
             return;
         }
 
-        let x = 50;
-        let y = 50;
+        const shapeRenderer = new ShapeRenderer();
+
+        shapeRenderer.addShape(
+            new Rectangle(100, 100)
+                .setColor('#FF0000')
+                .setPosition(0, 0)
+        );
 
         const renderShapes = () => {
             context.clearRect(0, 0, canvas.width, canvas.height);
-            context.beginPath();
-
-            context.moveTo(x, y);
-            context.quadraticCurveTo(x, 0, x + 50, 0);
-            context.quadraticCurveTo(x + 100, 0, x + 100, 50);
-            context.quadraticCurveTo(x + 100, 100, x + 50, 100);
-            context.quadraticCurveTo(x, 100, x, 50);
-            context.stroke();
-
-            x += 5;
-            
-            if (x > canvas.width) {
-              x = -100;
-            }
-
-            const frameId = requestAnimationFrame(renderShapes);
-            setAnimationFrameId(frameId);
+            shapeRenderer.render(context);
         }
 
-        renderShapes();
+        setAnimationFrameId(requestAnimationFrame(renderShapes));
+
+        // const handleResize = () => {
+        //     canvas.width = window.innerWidth;
+        //     canvas.height = 3 * window.innerWidth / 4;
+        //     console.log('resize')
+        //     setAnimationFrameId(requestAnimationFrame(renderShapes));
+        // }
+
+        // window.addEventListener('resize', handleResize);
 
         return () => {
             if (animationFrameId !== null) {
                 cancelAnimationFrame(animationFrameId);
             }
+
+            // window.removeEventListener('resize', handleResize);
         }
     }, [animationFrameId]);
 
