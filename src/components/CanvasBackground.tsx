@@ -1,15 +1,16 @@
 'use client'
 
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { ShapeRenderer, Rectangle } from '../utils/shapes';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 
 const CanvasBackground = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const shapeRenderer = useMemo(() => new ShapeRenderer(), []);
     const [animationFrameId, setAnimationFrameId] = useState<number | null>(null);
 
     useEffect(() => {
-        if (canvasRef.current === null || animationFrameId !== null) {
+        if (canvasRef.current === null || animationFrameId !== null || shapeRenderer == null) {
             return;
         }
 
@@ -27,8 +28,6 @@ const CanvasBackground = () => {
             return;
         }
 
-        const shapeRenderer = new ShapeRenderer();
-
         shapeRenderer.addShape(
             new Rectangle(100, 100)
                 .setColor('#FF0000')
@@ -42,23 +41,42 @@ const CanvasBackground = () => {
 
         setAnimationFrameId(requestAnimationFrame(renderShapes));
 
-        // const handleResize = () => {
-        //     canvas.width = window.innerWidth;
-        //     canvas.height = 3 * window.innerWidth / 4;
-        //     console.log('resize')
-        //     setAnimationFrameId(requestAnimationFrame(renderShapes));
-        // }
-
-        // window.addEventListener('resize', handleResize);
-
         return () => {
             if (animationFrameId !== null) {
                 cancelAnimationFrame(animationFrameId);
             }
-
-            // window.removeEventListener('resize', handleResize);
         }
-    }, [animationFrameId]);
+    }, [animationFrameId, shapeRenderer]);
+
+    useLayoutEffect(() => {
+        if (canvasRef.current === null || shapeRenderer == null) {
+            return;
+        }
+
+        const updateCanvas = () => {
+            const canvas = canvasRef.current;
+
+            if (canvas === null) {
+                return;
+            }
+
+            const parentWidth = canvas.parentElement!.clientWidth;
+            const parentHeight = canvas.parentElement!.clientHeight;
+            canvas.width = parentWidth;
+            canvas.height = parentWidth / (parentWidth / parentHeight);
+            const context = canvas.getContext('2d');
+
+            if (context === null) {
+                return;
+            }
+
+            shapeRenderer.render(context);
+        }
+
+        window.addEventListener('resize', updateCanvas);
+
+        return () => window.removeEventListener('resize', updateCanvas);
+    }, [shapeRenderer]);
 
     return (
         <canvas ref={canvasRef} className='canvas-background' />
