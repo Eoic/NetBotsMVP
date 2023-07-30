@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useLayoutEffect } from 'react';
-import { ShapeRenderer, Rectangle } from '../utils/shapes';
+import { ShapeRenderer, Rectangle, Circle, Triangle } from '../utils/shapes';
 import { useRef, useEffect, useState, useMemo } from 'react';
 
 const CanvasBackground = () => {
@@ -9,30 +9,33 @@ const CanvasBackground = () => {
     const shapeRenderer = useMemo(() => new ShapeRenderer(), []);
     const [animationFrameId, setAnimationFrameId] = useState<number | null>(null);
 
-    useEffect(() => {
-        if (canvasRef.current === null || animationFrameId !== null || shapeRenderer == null) {
+    const resizeCanvas = () => {
+        if (canvasRef.current === null)
             return;
-        }
+
+        const canvas = canvasRef.current;
+        canvas.height = canvas.parentElement!.clientHeight;
+        canvas.width = canvas.height * (canvas.clientWidth / canvas.clientHeight);
+    }
+
+    useEffect(() => {
+        if (canvasRef.current === null || animationFrameId !== null || shapeRenderer == null)
+            return;
 
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
         canvas.style.width = '100%';
         canvas.style.height = '100%';
+        resizeCanvas();
 
-        const parentWidth = canvas.parentElement!.clientWidth;
-        const parentHeight = canvas.parentElement!.clientHeight;
-        canvas.width = parentWidth;
-        canvas.height = parentWidth / (parentWidth / parentHeight);
-
-        if (context === null) {
+        if (context === null)
             return;
-        }
 
-        shapeRenderer.addShape(
-            new Rectangle(100, 100)
-                .setColor('#FF0000')
-                .setPosition(0, 0)
-        );
+        shapeRenderer
+            .addShape(new Rectangle(300, 300).setColor('#AF0000').setPosition(0.5, 0.5))
+            .addShape(new Circle(100).setColor('#36335C').setPosition(0.5, 0.5))
+            .addShape(new Circle(50).setColor('#433F71').setPosition(0.5, 0.5))
+            .addShape(new Triangle(250, 250).setColor('#F2F2F2').setPosition(0.5, 0.5))
 
         const renderShapes = () => {
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -49,33 +52,29 @@ const CanvasBackground = () => {
     }, [animationFrameId, shapeRenderer]);
 
     useLayoutEffect(() => {
-        if (canvasRef.current === null || shapeRenderer == null) {
+        if (canvasRef.current === null || shapeRenderer == null)
             return;
-        }
 
         const updateCanvas = () => {
             const canvas = canvasRef.current;
 
-            if (canvas === null) {
+            if (canvas === null)
                 return;
-            }
 
-            const parentWidth = canvas.parentElement!.clientWidth;
-            const parentHeight = canvas.parentElement!.clientHeight;
-            canvas.width = parentWidth;
-            canvas.height = parentWidth / (parentWidth / parentHeight);
             const context = canvas.getContext('2d');
+            resizeCanvas();
 
-            if (context === null) {
+            if (context === null)
                 return;
-            }
 
             shapeRenderer.render(context);
         }
 
         window.addEventListener('resize', updateCanvas);
 
-        return () => window.removeEventListener('resize', updateCanvas);
+        return () => { 
+            window.removeEventListener('resize', updateCanvas);
+        }
     }, [shapeRenderer]);
 
     return (

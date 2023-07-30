@@ -1,5 +1,4 @@
 import React from 'react';
-import Features from './Features';
 import CanvasBackground from './CanvasBackground';
 
 const Main = () => {
@@ -14,7 +13,6 @@ const Main = () => {
                     <button className='btn secondary'> Learn more </button>
                 </div>
             </section>
-            <Features />
             <CanvasBackground />
         </main>
     )

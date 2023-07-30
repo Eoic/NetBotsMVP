@@ -1,3 +1,4 @@
+import Features from "@/components/Features";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
@@ -7,6 +8,7 @@ const Home = () => {
         <>
             <Header />
             <Main />
+            <Features />
             <Footer />
         </>
     );

@@ -89,11 +89,11 @@
                 column-gap: 1rem;
             }
         }
+    }
 
-        .features {
-            color: variables.$text-on-secondary;
-            background-color: variables.$secondary;
-        }
+    .features {
+        color: variables.$text-on-secondary;
+        background-color: variables.$secondary;
     }
 
     .footer {
