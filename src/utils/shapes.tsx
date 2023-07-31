@@ -3,12 +3,14 @@ class Shape {
     protected _y: number;
     protected _width: number;
     protected _height: number;
+    protected _rotation: number;
     protected _color: string;
 
     get x() { return this._x; }
     get y() { return this._y; }
     get width() { return this._width }
     get height() { return this._height; }
+    get rotation() { return this._rotation; }
     get color() { return this._color; }
 
     constructor(width: number, height: number) {
@@ -16,6 +18,7 @@ class Shape {
         this._y = 0;
         this._width = width;
         this._height = height;
+        this._rotation = 0;
         this._color = '#FFFFFF';
     }
 
@@ -30,18 +33,24 @@ class Shape {
         return this;
     }
 
+    public setRotation(rotationDeg: number) {
+        this._rotation = rotationDeg * Math.PI / 180;
+        return this;
+    }
+
     public render(context: CanvasRenderingContext2D) {}
 }
 
 class Rectangle extends Shape {
     public render(context: CanvasRenderingContext2D) {
         context.beginPath();
-
-        context.rect(
+        context.globalAlpha = 0.5;
+        context.roundRect(
             context.canvas.width * this.x - this.width / 2,
             context.canvas.height * this.y - this.height / 2,
             this.width,
             this.height,
+            20,
         );
 
         context.fillStyle = this.color;
@@ -61,6 +70,7 @@ class Circle extends Shape {
 
     public render(context: CanvasRenderingContext2D) {
         context.beginPath();
+        context.globalAlpha = 0.5;
         const centerX = context.canvas.width * this.x;
         const centerY = context.canvas.height * this.y;            
         context.arc(centerX, centerY, this.radius, 0, 2 * Math.PI);
@@ -75,6 +85,7 @@ class Triangle extends Shape {
         const halfHeight = this.height / 2;
 
         context.beginPath();
+        context.globalAlpha = 0.5;
         context.moveTo(context.canvas.width * this.x - halfWidth, context.canvas.height * this.y - halfHeight);
         context.lineTo(context.canvas.width * this.x + halfWidth, context.canvas.height * this.y - halfHeight);
         context.lineTo(context.canvas.width * this.x + halfWidth, context.canvas.height * this.y + halfHeight);

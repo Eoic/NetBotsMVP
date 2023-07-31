@@ -35,17 +35,17 @@ const CanvasBackground = () => {
             {
                 [Rectangle.name]: { 
                     count: 10,
-                    size: { min: 10, max: 75 },
+                    size: { min: 100, max: 250 },
                     colors: ['#36335C', '#433F71']
                 },
                 [Circle.name]: { 
-                    count: 5,
-                    size: { min: 10, max: 50 },
+                    count: 0,
+                    size: { min: 100, max: 250 },
                     colors: ['#36335C', '#433F71']
                 },
                 [Triangle.name]: {
-                    count: 5,
-                    size: { min: 50, max: 100 },
+                    count: 0,
+                    size: { min: 100, max: 250 },
                     colors: ['#36335C', '#433F71']
                 }
             }

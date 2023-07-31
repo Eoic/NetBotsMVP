@@ -1,27 +1,48 @@
-import Link from 'next/link';
 import React from 'react';
+import Link from 'next/link';
+
+const Links = [
+    {
+        href: '/',
+        label: 'Features'
+    },
+    {
+        href: '/',
+        label: 'Documentation'
+    },
+    {
+        href: '/',
+        label: 'Register'
+    },
+    {
+        href: '/',
+        label: 'Login'
+    }
+];
 
 const Header = () => {
     return (
         <header className='header'>
-            <nav>
+            <nav className='desktop'>
                 <ul>
-                    <li>
-                        <Link href='/'>Features</Link>
-                    </li>
-                    <li>
-                        <Link href='/'>Documentation</Link>
-                    </li>
-                    <li>
-                        <Link href='/'>Register</Link>
-                    </li>
-                    <li>
-                        <Link href='/'>Login</Link>
-                    </li>
+                    {Links.map(({ href, label }, index) =>
+                        (
+                            <li key={`${label}-${index}`}>
+                                <Link href={href}>{label}</Link>
+                            </li>
+                        )
+                    )}
                 </ul>
             </nav>
+            <nav className='mobile'>
+                <button className='btn tertiary hamburger'>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
         </header>
-    )
+    );
 };
 
 export { Header };

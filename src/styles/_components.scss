@@ -50,4 +50,9 @@ button.btn {
             border-color: darken(variables.$tertiary, 2.5%);
         }
     }
+
+    @media (max-width: 768px) {
+        font-size: 0.95rem;
+        padding: 0.5rem 1.5rem;
+    }
 }

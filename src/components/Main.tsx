@@ -13,7 +13,6 @@ const Main = () => {
                     <button className='btn secondary'> Learn more </button>
                 </div>
             </section>
-            <CanvasBackground />
         </main>
     )
 };
