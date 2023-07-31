@@ -31,11 +31,25 @@ const CanvasBackground = () => {
         if (context === null)
             return;
 
-        shapeRenderer
-            .addShape(new Rectangle(300, 300).setColor('#AF0000').setPosition(0.5, 0.5))
-            .addShape(new Circle(100).setColor('#36335C').setPosition(0.5, 0.5))
-            .addShape(new Circle(50).setColor('#433F71').setPosition(0.5, 0.5))
-            .addShape(new Triangle(250, 250).setColor('#F2F2F2').setPosition(0.5, 0.5))
+        shapeRenderer.generateShapesRandomly(
+            {
+                [Rectangle.name]: { 
+                    count: 10,
+                    size: { min: 10, max: 75 },
+                    colors: ['#36335C', '#433F71']
+                },
+                [Circle.name]: { 
+                    count: 5,
+                    size: { min: 10, max: 50 },
+                    colors: ['#36335C', '#433F71']
+                },
+                [Triangle.name]: {
+                    count: 5,
+                    size: { min: 50, max: 100 },
+                    colors: ['#36335C', '#433F71']
+                }
+            }
+        )
 
         const renderShapes = () => {
             context.clearRect(0, 0, canvas.width, canvas.height);

@@ -84,6 +84,12 @@ class Triangle extends Shape {
     }
 }
 
+type ShapeConfig =  {
+    count: number;
+    size: { min: number; max: number; };
+    colors: string[];
+};
+
 class ShapeRenderer {
     private shapes: Shape[] = [];
 
@@ -92,17 +98,34 @@ class ShapeRenderer {
         return this;
     }
 
-    public distributeShapesRandomly(width: number, height: number) {
-        this.shapes.forEach(shape => {
-            const x = Math.random() * width;
-            const y = Math.random() * height;
-            shape.setPosition(x, y);
-        });
+    public distributeShapesRandomly() {
+        this.shapes.forEach(shape => shape.setPosition(Math.random(), Math.random()));
     }
 
-    public generateShapesRandomly() {
-        // TODO: Read config parameter and generate shapes.
-        // ...
+    public generateShapesRandomly(config: { [key: string]: ShapeConfig}) {
+        for (const [shapeName, shapeConfig] of Object.entries(config)) {
+            for (let i = 0; i < shapeConfig.count; i++) {
+                this.addShape(this.createShapeFromConfig(shapeName, shapeConfig));
+            }
+        }
+        
+        this.distributeShapesRandomly();
+        return this;
+    }
+
+    public createShapeFromConfig(name: string, config: ShapeConfig): Shape {
+        const size = Math.random() * (config.size.max - config.size.min) + config.size.min;
+        
+        switch (name) {
+            case Rectangle.name:
+                return new Rectangle(size, size).setColor(config.colors[Math.floor(Math.random() * config.colors.length)])
+            case Circle.name:
+                return new Circle(size).setColor(config.colors[Math.floor(Math.random() * config.colors.length)])
+            case Triangle.name:
+                return new Triangle(size, size).setColor(config.colors[Math.floor(Math.random() * config.colors.length)])
+            default:
+                throw new Error(`Shape ${name} is not supported.`);
+        }
     }
 
     public render(context: CanvasRenderingContext2D) {
